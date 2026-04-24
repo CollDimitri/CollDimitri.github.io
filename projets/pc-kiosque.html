@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PC Kiosque Contrôleurs — Dimitri COLL | BTS SIO SISR</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2338BDF8'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' font-family='monospace' font-weight='700' font-size='28' fill='%230B1120'%3EDC%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="brand"><span class="brand-mark">DC</span><span>Dimitri COLL — SISR</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="../about.html">À propos</a></li>
+      <li><a href="../competences.html">Compétences</a></li>
+      <li><a href="../projets.html">Projets</a></li>
+      <li><a href="../veille.html">Veille techno</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="reveal">
+      <div class="breadcrumb">
+        <a href="../index.html">Accueil</a> <span>/</span>
+        <a href="../projets.html">Projets</a> <span>/</span>
+        <span>PC Kiosque Contrôleurs</span>
+      </div>
+      <div class="eyebrow">Projet professionnel · Alternance SNCF Voyageurs</div>
+      <h1>Déploiement de postes kiosques<br/>pour les contrôleurs SNCF.</h1>
+      <p style="max-width: 72ch; font-size: 1.05rem;">
+        Conception et déploiement de PC génériques sécurisés permettant aux contrôleurs de consulter leurs horaires de service. Autologon, mode kiosque, script de heartbeat, verrouillage complet du poste — tout automatisé, sans intervention humaine au démarrage.
+      </p>
+      <div class="meta-row">
+        <div class="meta"><span class="meta-label">Contexte</span><span class="meta-value">Alternance SNCF Voyageurs</span></div>
+        <div class="meta"><span class="meta-label">Durée</span><span class="meta-value">2 semaines</span></div>
+        <div class="meta"><span class="meta-label">Environnement</span><span class="meta-value">Windows 10 LTSC · AD</span></div>
+        <div class="meta"><span class="meta-label">Postes déployés</span><span class="meta-value">8 kiosques</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid" style="grid-template-columns: minmax(0,1fr) 280px; gap: 48px; align-items: start;">
+      <article class="prose reveal">
+
+        <h2>1. Contexte et besoin</h2>
+        <p>Dans les locaux techniques de SNCF Voyageurs, les <strong>contrôleurs de train</strong> ont besoin de consulter leurs horaires et missions de service avant chaque prise de poste. Ces informations sont disponibles sur un portail web interne. Le problème historique : les postes partagés n'étaient pas configurés de façon homogène, les sessions n'étaient pas fermées correctement, et des utilisateurs non autorisés pouvaient modifier les réglages.</p>
+
+        <p>On m'a confié la mission de déployer <strong>8 postes "kiosques" identiques</strong> avec les contraintes suivantes :</p>
+        <ul>
+          <li>Le PC démarre seul et ouvre <strong>automatiquement le portail horaires</strong>, sans que l'agent touche au clavier.</li>
+          <li>L'interface est <strong>verrouillée</strong> : pas d'accès au bureau, à l'explorateur ou aux paramètres.</li>
+          <li>En cas de coupure de courant, le poste doit <strong>redémarrer et reprendre automatiquement</strong>.</li>
+          <li>Un <strong>log de démarrage</strong> est envoyé au serveur de supervision pour savoir quel poste est opérationnel.</li>
+          <li>Tous les postes doivent être <strong>strictement identiques</strong> (même image disque, même configuration).</li>
+        </ul>
+
+        <h2>2. Architecture de la solution</h2>
+
+        <div class="ascii-schema">
+  ┌──────────────────────────────────────────────────┐
+  │               PC Kiosque (Windows 10 LTSC)        │
+  │                                                   │
+  │  ┌─────────────────────────────────────────────┐  │
+  │  │           Compte local "kiosque"            │  │
+  │  │    (droits limités, mot de passe complexe)  │  │
+  │  └──────────────────────┬──────────────────────┘  │
+  │                         │  Autologon (regedit)    │
+  │  ┌──────────────────────▼──────────────────────┐  │
+  │  │      Script PowerShell (démarrage session)  │  │
+  │  │  ① Envoie heartbeat → Serveur monitoring   │  │
+  │  │  ② Lance Chrome en mode kiosque            │  │
+  │  │  ③ Surveille le process Chrome (watchdog)  │  │
+  │  └─────────────────────────────────────────────┘  │
+  │                                                   │
+  │  GPO locale : bureau vide, tâches désactivées     │
+  │  Shell replacement : Chrome = shell par défaut    │
+  └──────────────────────────────────────────────────┘
+           │                          │
+           │ RJ45 · VLAN kiosques     │
+           ▼                          ▼
+  ┌─────────────────┐      ┌─────────────────────┐
+  │  Serveur AD     │      │  Portail horaires   │
+  │  (politiques,   │      │  (URL interne)      │
+  │   DNS interne)  │      └─────────────────────┘
+  └─────────────────┘
+        </div>
+
+        <h2>3. Étape 1 — Création du compte kiosque local</h2>
+
+        <p>Chaque poste dispose d'un <strong>compte local dédié</strong> <code>kiosque</code>, créé via PowerShell pour garantir l'homogénéité :</p>
+
+<div class="code-block">
+<span class="c"># Création du compte local kiosque avec mot de passe non-expirant</span>
+<span class="k">$pwd</span> = ConvertTo-SecureString <span class="s">"K1osque!SNCF#2025"</span> -AsPlainText -Force
+
+New-LocalUser -Name <span class="s">"kiosque"</span> <span class="k">`</span>
+    -Password <span class="k">$pwd</span> <span class="k">`</span>
+    -FullName <span class="s">"Poste Kiosque Contrôleurs"</span> <span class="k">`</span>
+    -Description <span class="s">"Compte auto-login - NE PAS SUPPRIMER"</span> <span class="k">`</span>
+    -PasswordNeverExpires <span class="k">`</span>
+    -UserMayNotChangePassword
+
+<span class="c"># On NE l'ajoute PAS aux administrateurs locaux</span>
+<span class="c"># Groupe Users uniquement = droits minimaux</span>
+</div>
+
+        <h2>4. Étape 2 — Autologon via le registre Windows</h2>
+
+        <p>L'autologon permet au PC de se connecter automatiquement avec le compte <code>kiosque</code> au démarrage, sans qu'aucun agent tape un mot de passe. La configuration passe par la clé de registre <code>Winlogon</code> :</p>
+
+<div class="code-block">
+<span class="c"># Chemin de registre concerné :</span>
+<span class="c"># HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon</span>
+
+<span class="k">$regPath</span> = <span class="s">"HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"</span>
+
+Set-ItemProperty -Path <span class="k">$regPath</span> -Name <span class="s">"AutoAdminLogon"</span>    -Value <span class="s">"1"</span>
+Set-ItemProperty -Path <span class="k">$regPath</span> -Name <span class="s">"DefaultUserName"</span>   -Value <span class="s">"kiosque"</span>
+Set-ItemProperty -Path <span class="k">$regPath</span> -Name <span class="s">"DefaultPassword"</span>   -Value <span class="s">"K1osque!SNCF#2025"</span>
+Set-ItemProperty -Path <span class="k">$regPath</span> -Name <span class="s">"DefaultDomainName"</span> -Value <span class="s">"."</span>
+<span class="c"># "." = machine locale (pas de domaine pour ce compte)</span>
+
+<span class="c"># Désactiver l'écran de verrouillage</span>
+Set-ItemProperty -Path <span class="k">$regPath</span> -Name <span class="s">"DisableLockWorkstation"</span> -Value <span class="s">"1"</span>
+</div>
+
+        <div class="note-box">
+          <strong>Sécurité</strong> — Le mot de passe stocké en clair dans le registre est lisible par un admin local. Dans un environnement critique, on utilise plutôt l'outil <strong>Autologon.exe</strong> de Sysinternals (Microsoft), qui chiffre le mot de passe dans <code>LSA Secrets</code> : les données sont illisibles sans être admin de domaine. J'ai utilisé cette version sur les postes finaux.
+        </div>
+
+        <h2>5. Étape 3 — Shell replacement : Chrome comme bureau</h2>
+
+        <p>Plutôt qu'un bureau Windows classique, le shell du compte kiosque est remplacé directement par Chrome. Le résultat : à la connexion, <strong>aucun bureau ne s'affiche</strong>, Chrome s'ouvre directement en plein écran sur le portail horaires.</p>
+
+<div class="code-block">
+<span class="c"># Dans Winlogon, on remplace "explorer.exe" par Chrome en mode kiosque</span>
+<span class="k">$chromePath</span> = <span class="s">"C:\Program Files\Google\Chrome\Application\chrome.exe"</span>
+<span class="k">$url</span>        = <span class="s">"https://horaires.intranet.sncf.fr"</span>
+
+<span class="k">$shellCmd</span> = <span class="s">"</span><span class="k">$chromePath</span> --kiosk <span class="k">$url</span> ``
+    --disable-infobars ``
+    --disable-session-crashed-bubble ``
+    --disable-restore-session-state ``
+    --no-first-run ``
+    --disable-features=TranslateUI ``
+    --disable-pinch ``
+    --overscroll-history-navigation=0<span class="s">"</span>
+
+Set-ItemProperty -Path <span class="k">$regPath</span> -Name <span class="s">"Shell"</span> -Value <span class="k">$shellCmd</span>
+</div>
+
+        <p>Avec ce réglage, même si l'agent appuie sur <kbd>Échap</kbd> ou <kbd>F11</kbd>, Chrome reste en plein écran et il n'y a aucun bureau accessible derrière. Le seul moyen de quitter : fermer Chrome via le Gestionnaire des tâches… qui est désactivé (voir étape suivante).</p>
+
+        <h2>6. Étape 4 — Verrouillage via stratégies locales</h2>
+
+        <p>J'ai configuré les <strong>stratégies de groupe locales</strong> (<code>gpedit.msc</code>) pour verrouiller complètement le poste :</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Stratégie</th><th>Chemin GPO</th><th>Valeur</th></tr></thead>
+            <tbody>
+              <tr><td>Désactiver le Gestionnaire des tâches</td><td>Config. utilisateur → Système</td><td>Activé</td></tr>
+              <tr><td>Désactiver Ctrl+Alt+Suppr</td><td>Config. utilisateur → Système</td><td>Activé</td></tr>
+              <tr><td>Empêcher l'accès aux outils de modification du registre</td><td>Config. utilisateur → Système</td><td>Activé</td></tr>
+              <tr><td>Supprimer l'accès à Exécuter</td><td>Config. utilisateur → Menu Démarrer</td><td>Activé</td></tr>
+              <tr><td>Masquer toutes les icônes du Bureau</td><td>Config. utilisateur → Bureau</td><td>Activé</td></tr>
+              <tr><td>Désactiver le clic droit sur le Bureau</td><td>Config. utilisateur → Bureau</td><td>Activé</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Pour renforcer encore, j'ai aussi configuré ces valeurs de registre :</p>
+
+<div class="code-block">
+<span class="k">$polPath</span> = <span class="s">"HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies"</span>
+
+<span class="c"># Désactiver le Gestionnaire des tâches</span>
+New-Item -Path <span class="s">"</span><span class="k">$polPath</span>\System<span class="s">"</span> -Force | Out-Null
+Set-ItemProperty -Path <span class="s">"</span><span class="k">$polPath</span>\System<span class="s">"</span> -Name <span class="s">"DisableTaskMgr"</span> -Value 1
+
+<span class="c"># Désactiver le bouton Windows (clé Windows du clavier)</span>
+Set-ItemProperty -Path <span class="s">"HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"</span> `
+    -Name <span class="s">"NoWinKeys"</span> -Value 1
+
+<span class="c"># Empêcher tout changement de fond d'écran</span>
+Set-ItemProperty -Path <span class="s">"</span><span class="k">$polPath</span>\ActiveDesktop<span class="s">"</span> -Name <span class="s">"NoChangingWallPaper"</span> -Value 1
+</div>
+
+        <h2>7. Étape 5 — Script de heartbeat (log de démarrage)</h2>
+
+        <p>À chaque démarrage du poste, un script PowerShell envoie une requête HTTP au serveur de monitoring interne. Cela permet de savoir en temps réel quels kiosques sont allumés et opérationnels, sans avoir à aller vérifier physiquement.</p>
+
+<div class="code-block">
+<span class="c"># kiosk-heartbeat.ps1 — lancé au démarrage de session via le Planificateur de tâches</span>
+
+<span class="k">$hostname</span>  = <span class="k">$env</span>:COMPUTERNAME
+<span class="k">$timestamp</span> = Get-Date -Format <span class="s">"yyyy-MM-dd HH:mm:ss"</span>
+<span class="k">$ip</span>        = (Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias <span class="s">"Ethernet"</span>).IPAddress
+<span class="k">$monUrl</span>    = <span class="s">"https://monitoring.intranet.sncf.fr/api/kiosk-log"</span>
+
+<span class="k">$body</span> = @{
+    host      = <span class="k">$hostname</span>
+    ip        = <span class="k">$ip</span>
+    timestamp = <span class="k">$timestamp</span>
+    status    = <span class="s">"online"</span>
+} | ConvertTo-Json
+
+<span class="k">try</span> {
+    Invoke-RestMethod -Uri <span class="k">$monUrl</span> -Method POST -Body <span class="k">$body</span> -ContentType <span class="s">"application/json"</span>
+    Write-EventLog -LogName Application -Source <span class="s">"KioskHeartbeat"</span> `
+        -EntryType Information -EventId 1000 `
+        -Message <span class="s">"Heartbeat envoyé : </span><span class="k">$hostname</span> (<span class="k">$ip</span>)<span class="s">"</span>
+} <span class="k">catch</span> {
+    <span class="c"># En cas d'échec réseau, on log localement et on réessaie dans 5 min</span>
+    Write-EventLog -LogName Application -Source <span class="s">"KioskHeartbeat"</span> `
+        -EntryType Warning -EventId 1001 `
+        -Message <span class="s">"Échec heartbeat : </span><span class="k">$_</span><span class="s">"</span>
+    Start-Sleep -Seconds 300
+    <span class="c"># Re-tentative silencieuse</span>
+    Invoke-RestMethod -Uri <span class="k">$monUrl</span> -Method POST -Body <span class="k">$body</span> -ContentType <span class="s">"application/json"</span> `
+        -ErrorAction SilentlyContinue
+}
+</div>
+
+        <p>Le script est enregistré dans le Planificateur de tâches (<code>taskschd.msc</code>) avec les paramètres suivants : <em>Déclencheur : À l'ouverture de session de l'utilisateur "kiosque"</em> · <em>Exécuter avec les autorisations les plus élevées : NON</em> (le compte kiosque n'est pas admin) · <em>Cacher la fenêtre : OUI</em>.</p>
+
+        <h2>8. Étape 6 — Watchdog Chrome (redémarrage automatique)</h2>
+
+        <p>Si Chrome plante ou se ferme pour une raison quelconque, un second script (watchdog) tourne en arrière-plan et le relance automatiquement :</p>
+
+<div class="code-block">
+<span class="c"># kiosk-watchdog.ps1 — tourne en boucle en arrière-plan</span>
+
+<span class="k">$chromePath</span> = <span class="s">"C:\Program Files\Google\Chrome\Application\chrome.exe"</span>
+<span class="k">$url</span>        = <span class="s">"https://horaires.intranet.sncf.fr"</span>
+<span class="k">$args</span>       = <span class="s">"--kiosk $url --disable-infobars --no-first-run"</span>
+
+<span class="k">while</span> (<span class="k">$true</span>) {
+    <span class="k">$proc</span> = Get-Process -Name <span class="s">"chrome"</span> -ErrorAction SilentlyContinue
+
+    <span class="k">if</span> (-not <span class="k">$proc</span>) {
+        Write-EventLog -LogName Application -Source <span class="s">"KioskWatchdog"</span> `
+            -EntryType Warning -EventId 2000 `
+            -Message <span class="s">"Chrome non détecté. Relancement..."</span>
+
+        Start-Process -FilePath <span class="k">$chromePath</span> -ArgumentList <span class="k">$args</span>
+        Start-Sleep -Seconds 5
+    }
+
+    Start-Sleep -Seconds 10  <span class="c"># vérification toutes les 10 secondes</span>
+}
+</div>
+
+        <h2>9. Étape 7 — Redémarrage automatique après coupure</h2>
+
+        <p>Configuration BIOS/UEFI sur chaque machine : dans les options <em>Power Management</em>, réglage de <strong>"Restore on AC Power Loss"</strong> sur <code>Power On</code>. Ainsi, si une coupure électrique éteint le poste, il se rallume seul au retour du courant — sans intervention.</p>
+
+        <p>Côté Windows, la connexion automatique se fait via l'autologon configuré précédemment, et les scripts reprennent automatiquement via le Planificateur de tâches.</p>
+
+        <h2>10. Déploiement sur les 8 postes</h2>
+
+        <p>Une fois le premier poste configuré et validé, j'ai créé un <strong>script de déploiement maître</strong> qui applique toute la configuration en une seule exécution. Pour les 7 postes restants, j'ai utilisé deux approches combinées :</p>
+        <ul>
+          <li><strong>Clonage disque</strong> : image Clonezilla du premier poste déployée sur les suivants via une clé USB bootable (les postes étant identiques matériellement).</li>
+          <li><strong>Post-configuration</strong> : un script PowerShell s'exécute au premier démarrage pour personnaliser le nom du poste (<code>KIOSK-01</code> à <code>KIOSK-08</code>) et mettre à jour le hostname dans le script de heartbeat.</li>
+        </ul>
+
+        <p>Durée totale pour les 8 postes : <strong>environ 4 heures</strong>.</p>
+
+        <h2>11. Tests &amp; validation</h2>
+        <ul>
+          <li>Redémarrage à froid → Chrome s'ouvre seul sur le portail ✔</li>
+          <li>Coupure secteur simulée → reprise automatique ✔</li>
+          <li>Tentative d'accès au bureau (Ctrl+Alt+Suppr) → bloqué ✔</li>
+          <li>Plantage Chrome simulé (kill process) → watchdog relance en 10 secondes ✔</li>
+          <li>Dashboard monitoring → tous les kiosques remontent bien au démarrage ✔</li>
+          <li>Tentative de changement de page via la barre d'adresse → Chrome kiosque ne l'affiche pas ✔</li>
+        </ul>
+
+        <div class="note-box">
+          <strong>Résultat final</strong> — Les 8 kiosques sont opérationnels en production. Le responsable informatique peut suivre leur état depuis le dashboard de monitoring. Aucune intervention manuelle n'est nécessaire après une coupure. Les agents contrôleurs n'ont pas besoin de toucher à la configuration.
+        </div>
+
+        <h2>12. Compétences BTS mobilisées</h2>
+        <div class="cc-map">
+          <div class="cc-chip"><span class="num">B1.1</span><span>Gérer le patrimoine informatique (déploiement homogène)</span></div>
+          <div class="cc-chip"><span class="num">B1.4</span><span>Travailler en mode projet (planification, tests)</span></div>
+          <div class="cc-chip"><span class="num">B1.5</span><span>Mettre à disposition un service pour les utilisateurs</span></div>
+          <div class="cc-chip"><span class="num">B2.1</span><span>Concevoir une solution d'infrastructure adaptée</span></div>
+          <div class="cc-chip"><span class="num">B2.2</span><span>Installer, tester et déployer la solution</span></div>
+          <div class="cc-chip"><span class="num">B2.3</span><span>Exploiter, dépanner et assurer la continuité du service</span></div>
+        </div>
+
+        <div class="btn-row mt-4">
+          <a href="../projets.html" class="btn btn-ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Tous les projets
+          </a>
+          <a href="projet-entreprise.html" class="btn btn-primary">
+            Projet suivant : Entreprise SNCF
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+
+      </article>
+
+      <!-- SIDEBAR -->
+      <aside class="reveal">
+        <div class="card" style="position: sticky; top: 100px;">
+          <h4 style="font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-dim); margin: 0 0 14px;">Fiche projet</h4>
+          <dl style="display: grid; gap: 14px; margin: 0; font-size: 0.92rem;">
+            <div>
+              <dt class="text-muted" style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: .08em;">Technos</dt>
+              <dd style="margin: 4px 0 0; display: flex; flex-wrap: wrap; gap: 6px;">
+                <span class="tag">Windows 10 LTSC</span>
+                <span class="tag">PowerShell</span>
+                <span class="tag">Regedit</span>
+                <span class="tag">Chrome Kiosque</span>
+                <span class="tag">GPO locale</span>
+                <span class="tag">Clonezilla</span>
+              </dd>
+            </div>
+            <div>
+              <dt class="text-muted" style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: .08em;">Livrables</dt>
+              <dd style="margin: 4px 0 0;">
+                <ul style="padding-left: 18px; margin: 0; color: var(--text-muted); font-size: 0.88rem; line-height: 1.9;">
+                  <li>Script <code>kiosk-setup.ps1</code></li>
+                  <li>Script <code>kiosk-heartbeat.ps1</code></li>
+                  <li>Script <code>kiosk-watchdog.ps1</code></li>
+                  <li>Image Clonezilla master</li>
+                  <li>Procédure de déploiement</li>
+                </ul>
+              </dd>
+            </div>
+            <div>
+              <dt class="text-muted" style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: .08em;">Compétences</dt>
+              <dd style="margin: 4px 0 0; color: var(--text); font-size: 0.9rem;">
+                B1.1 · B1.4 · B1.5<br/>B2.1 · B2.2 · B2.3
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <div class="brand" style="margin-bottom: 14px;"><span class="brand-mark">DC</span><span>Dimitri COLL</span></div>
+        <p class="text-muted" style="font-size: 0.9rem;">Portfolio BTS SIO SISR · Session 2026.</p>
+      </div>
+      <div><h4>Navigation</h4><ul>
+        <li><a href="../about.html">À propos</a></li>
+        <li><a href="../competences.html">Compétences</a></li>
+        <li><a href="../projets.html">Projets</a></li>
+        <li><a href="../veille.html">Veille</a></li>
+      </ul></div>
+      <div><h4>Contact</h4><ul>
+        <li><a href="../contact.html">Me contacter</a></li>
+      </ul></div>
+    </div>
+    <div class="copy"><span>© 2026 Dimitri COLL</span><span>BTS SIO SISR · Session 2026</span></div>
+  </div>
+</footer>
+<script src="../js/main.js"></script>
+</body>
+</html>

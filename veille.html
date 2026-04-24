@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Veille technologique — Dimitri COLL | BTS SIO SISR</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2338BDF8'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' font-family='monospace' font-weight='700' font-size='28' fill='%230B1120'%3EDC%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .veille-article {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+    .veille-article h3 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+    }
+    .veille-article .meta-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .veille-article p { color: var(--text-muted); line-height: 1.75; margin-bottom: 14px; }
+    .veille-article p:last-child { margin-bottom: 0; }
+    .veille-article strong { color: var(--text); }
+    .source-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+    .source-list li a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(56,189,248,0.07);
+      border: 1px solid rgba(56,189,248,0.25);
+      border-radius: 20px;
+      color: var(--accent);
+      font-size: 0.83rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .source-list li a:hover { background: rgba(56,189,248,0.18); }
+    .source-list li a::before { content: "🔗"; font-size: 0.78rem; }
+    .sources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .source-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color .2s, transform .15s;
+      display: block;
+    }
+    .source-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .source-card .sc-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      margin-bottom: 6px;
+    }
+    .source-card h3 { font-size: 0.95rem; margin-bottom: 4px; }
+    .source-card p  { font-size: 0.82rem; color: var(--text-muted); margin: 0; }
+  </style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand"><span class="brand-mark">DC</span><span>Dimitri COLL — SISR</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="about.html">À propos</a></li>
+      <li><a href="competences.html">Compétences</a></li>
+      <li><a href="projets.html">Projets</a></li>
+      <li><a href="veille.html">Veille techno</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">Veille technologique</div>
+      <h1>Rester à jour,<br/>une compétence à part entière.</h1>
+      <p style="max-width: 68ch; font-size: 1.05rem;">
+        Thème principal : <strong>cybersécurité défensive, ransomwares et protection des systèmes d'entreprise</strong>. Je suis ce sujet au quotidien via un ensemble de sources institutionnelles et spécialisées.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SOURCES DE VEILLE -->
+<section class="section" style="background: var(--bg-elev);">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">Sources suivies</div>
+      <h2>Où je m'informe</h2>
+    </div>
+    <div class="sources-grid mt-4 reveal">
+
+      <a href="https://www.cert.ssi.gouv.fr/" target="_blank" rel="noopener" class="source-card">
+        <div class="sc-label">Institutionnel · France</div>
+        <h3>CERT-FR / ANSSI</h3>
+        <p>Alertes de sécurité, avis et bulletins officiels du gouvernement français. Ma première source.</p>
+      </a>
+
+      <a href="https://www.bleepingcomputer.com/" target="_blank" rel="noopener" class="source-card">
+        <div class="sc-label">Actualité · EN</div>
+        <h3>BleepingComputer</h3>
+        <p>Référence mondiale pour les incidents ransomwares, les vulnérabilités et les correctifs en temps réel.</p>
+      </a>
+
+      <a href="https://www.lemondeinformatique.fr/" target="_blank" rel="noopener" class="source-card">
+        <div class="sc-label">Presse · FR</div>
+        <h3>Le Monde Informatique</h3>
+        <p>Actu IT française : infrastructure, cloud, cybersécurité, réseaux, projets d'entreprise.</p>
+      </a>
+
+      <a href="https://www.lemagit.fr/" target="_blank" rel="noopener" class="source-card">
+        <div class="sc-label">Presse · FR</div>
+        <h3>LeMagIT</h3>
+        <p>Analyses approfondies pour les professionnels IT. Dossiers sur les ransomwares, EDR, SIEM.</p>
+      </a>
+
+      <a href="https://techcommunity.microsoft.com/" target="_blank" rel="noopener" class="source-card">
+        <div class="sc-label">Officiel · Microsoft</div>
+        <h3>Microsoft Tech Community</h3>
+        <p>Blog technique officiel Microsoft : mises à jour Windows Server, Active Directory, Azure AD.</p>
+      </a>
+
+      <a href="https://cvefeed.io/" target="_blank" rel="noopener" class="source-card">
+        <div class="sc-label">Outil · CVE</div>
+        <h3>CVE Feed</h3>
+        <p>Flux de vulnérabilités CVE en temps réel. Utile pour surveiller les failles des produits que j'utilise.</p>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLES DE VEILLE DÉTAILLÉS -->
+<section class="section">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">Articles de veille analysés</div>
+      <h2>4 sujets que j'ai creusés en détail</h2>
+    </div>
+
+    <!-- Veille 1 : Ransomware RaaS -->
+    <div class="veille-article reveal">
+      <div class="meta-line">
+        <span class="tag tag-accent">Cybersécurité</span>
+        <span class="tag">Ransomware</span>
+        <span class="tag">2024-2025</span>
+      </div>
+      <h3>Le modèle Ransomware-as-a-Service (RaaS) : pourquoi les PME sont les premières victimes</h3>
+
+      <p><strong>Qu'est-ce que c'est ?</strong> Avant, une attaque ransomware demandait des compétences techniques avancées. Aujourd'hui, des groupes comme <strong>LockBit</strong>, <strong>BlackCat (ALPHV)</strong> ou <strong>Akira</strong> mettent leur infrastructure clé-en-main à la location pour des "affiliés" : n'importe qui peut louer un ransomware, l'envoyer à des victimes, et reverser 20-30% des rançons au groupe. C'est le modèle RaaS.</p>
+
+      <p><strong>Chiffres qui font froid dans le dos :</strong> En 2024, l'ANSSI a recensé plus de 400 incidents cybersécurité significatifs en France. 70% des victimes de ransomwares sont des PME ou des collectivités — précisément parce qu'elles ont moins de ressources pour se défendre. Le coût moyen d'une attaque pour une PME française dépasse <strong>50 000 €</strong> (remédiation + arrêt d'activité).</p>
+
+      <p><strong>Ce que ça change pour un admin sys :</strong> La réponse n'est plus seulement technique. Elle est aussi organisationnelle. Concrètement, voilà ce que je retiens : (1) la <strong>segmentation réseau</strong> (VLAN, DMZ) limite la propagation latérale une fois qu'un poste est infecté ; (2) les <strong>sauvegardes hors ligne</strong> (règle 3-2-1) sont l'assurance-vie de l'entreprise ; (3) le <strong>principe de moindre privilège</strong> dans Active Directory (pas de compte admin pour tout le monde) réduit drastiquement la surface d'attaque ; (4) la <strong>sensibilisation des utilisateurs</strong> au phishing reste le premier rempart — 90% des infections commencent par un email.</p>
+
+      <p><strong>Cas concret que j'ai suivi :</strong> En novembre 2024, le groupe Akira a ciblé plusieurs PME françaises du secteur transport. L'ANSSI a publié un bulletin CERT-FR avec les IOC (indicateurs de compromission) et les recommandations. J'ai consulté ce bulletin et vérifié que les règles pfSense de mon projet couvraient les flux utilisés par ce groupe.</p>
+
+      <ul class="source-list">
+        <li><a href="https://www.cert.ssi.gouv.fr/actualite/CERTFR-2024-ACT-001/" target="_blank" rel="noopener">CERT-FR — Rapport annuel 2024</a></li>
+        <li><a href="https://www.bleepingcomputer.com/tag/akira-ransomware/" target="_blank" rel="noopener">BleepingComputer — Akira</a></li>
+        <li><a href="https://www.lemagit.fr/actualites/ransomware" target="_blank" rel="noopener">LeMagIT — Dossier Ransomware</a></li>
+        <li><a href="https://www.anssi.fr/actualite/panorama-de-la-cybermenace-2024/" target="_blank" rel="noopener">ANSSI — Panorama cybermenace</a></li>
+      </ul>
+    </div>
+
+    <!-- Veille 2 : Windows 11 24H2 -->
+    <div class="veille-article reveal">
+      <div class="meta-line">
+        <span class="tag tag-accent">Systèmes</span>
+        <span class="tag">Windows 11</span>
+        <span class="tag">2024</span>
+      </div>
+      <h3>Windows 11 24H2 : ce que ça change pour un administrateur de parc</h3>
+
+      <p><strong>Contexte :</strong> Microsoft a déployé la mise à jour majeure <strong>Windows 11 24H2</strong> à partir d'octobre 2024. Pour un admin de parc qui gère des postes Windows (mon quotidien chez SNCF), cette mise à jour a des implications concrètes à anticiper avant un déploiement.</p>
+
+      <p><strong>Nouveautés qui m'intéressent directement :</strong> La 24H2 renforce le chiffrement par défaut sur les appareils compatibles (<strong>BitLocker activé automatiquement</strong> sur les éditions Home et Pro, ce qui n'était pas le cas avant). Pour un parc géré via Active Directory, cela signifie qu'il faut impérativement configurer la <strong>sauvegarde des clés de récupération BitLocker dans l'AD</strong> avant la migration — sinon un utilisateur bloqué ne peut plus accéder à son poste. C'est un point de vigilance que j'ai remonté en entreprise.</p>
+
+      <p><strong>Compatibilité et déploiement :</strong> La 24H2 exige <strong>Secure Boot</strong> et <strong>TPM 2.0</strong>. Dans un parc avec des machines anciennes, cela peut poser problème. J'ai appris à vérifier la compatibilité TPM via PowerShell (<code>Get-WmiObject -Namespace "root\CIMv2\Security\MicrosoftTpm" -Class Win32_Tpm</code>) avant tout déploiement en masse. Pour les machines incompatibles, on reste sur Windows 10 LTSC (support jusqu'en 2025 pour la version grand public, 2029 pour LTSC).</p>
+
+      <p><strong>Ce que j'ai fait :</strong> Avant de déployer la mise à jour sur les postes de mon site, j'ai d'abord testé sur une VM, vérifié les GPO existantes pour identifier les éventuelles incompatibilités, et mis en place la sauvegarde des clés BitLocker dans l'AD.</p>
+
+      <ul class="source-list">
+        <li><a href="https://techcommunity.microsoft.com/t5/windows-it-pro-blog/bg-p/Windows10Blog" target="_blank" rel="noopener">Microsoft Tech Community — Windows IT Pro</a></li>
+        <li><a href="https://learn.microsoft.com/fr-fr/windows/whats-new/windows-11-version-24h2" target="_blank" rel="noopener">Microsoft Learn — Nouveautés 24H2</a></li>
+        <li><a href="https://www.bleepingcomputer.com/tag/windows-11/" target="_blank" rel="noopener">BleepingComputer — Windows 11</a></li>
+      </ul>
+    </div>
+
+    <!-- Veille 3 : CVE Windows / Patch Tuesday -->
+    <div class="veille-article reveal">
+      <div class="meta-line">
+        <span class="tag tag-accent">Sécurité</span>
+        <span class="tag">CVE</span>
+        <span class="tag">Patch Tuesday</span>
+      </div>
+      <h3>Patch Tuesday Microsoft : comment je suis les CVE critiques chaque mois</h3>
+
+      <p><strong>C'est quoi le Patch Tuesday ?</strong> Chaque deuxième mardi du mois, Microsoft publie ses correctifs de sécurité. C'est un rendez-vous incontournable pour tout admin Windows. En décembre 2024, Microsoft a corrigé <strong>71 vulnérabilités</strong>, dont 16 critiques. Parmi elles, une faille dans le spouleur d'impression Windows (<strong>CVE-2024-49070</strong>) permettait une élévation de privilèges — exactement le type de vulnérabilité exploité dans les premières phases d'une attaque ransomware.</p>
+
+      <p><strong>Mon processus de veille :</strong> Je consulte deux sources pour chaque Patch Tuesday. D'abord le <strong>Security Update Guide de Microsoft</strong> pour la liste officielle des CVE. Ensuite <strong>BleepingComputer</strong> pour comprendre lesquelles sont réellement critiques dans mon environnement (certaines CVE "critiques" n'impactent pas les configurations que je gère). Je me concentre sur les CVE avec un score <strong>CVSS ≥ 8.0</strong> qui concernent des composants que j'utilise (spouleur, Active Directory, RDP, SMB).</p>
+
+      <p><strong>Dans la pratique :</strong> Dès qu'une CVE critique touche des produits de mon parc, je remonte l'information à mon responsable et je planifie le déploiement du patch via Windows Update for Business ou WSUS. Pour les failles zero-day (exploitées avant le patch), j'applique les workarounds recommandés par Microsoft en attendant le correctif officiel.</p>
+
+      <ul class="source-list">
+        <li><a href="https://msrc.microsoft.com/update-guide/" target="_blank" rel="noopener">Microsoft Security Update Guide</a></li>
+        <li><a href="https://www.bleepingcomputer.com/tag/patch-tuesday/" target="_blank" rel="noopener">BleepingComputer — Patch Tuesday</a></li>
+        <li><a href="https://cvefeed.io/" target="_blank" rel="noopener">CVE Feed — flux de vulnérabilités</a></li>
+        <li><a href="https://www.cert.ssi.gouv.fr/avis/" target="_blank" rel="noopener">CERT-FR — Avis de sécurité</a></li>
+      </ul>
+    </div>
+
+    <!-- Veille 4 : NIS2 -->
+    <div class="veille-article reveal">
+      <div class="meta-line">
+        <span class="tag tag-accent">Réglementation</span>
+        <span class="tag">NIS 2</span>
+        <span class="tag">2025</span>
+      </div>
+      <h3>La directive NIS 2 : quelles obligations pour les entreprises françaises ?</h3>
+
+      <p><strong>Qu'est-ce que NIS 2 ?</strong> La directive européenne <strong>NIS 2</strong> (Network and Information Security 2) est entrée en vigueur en janvier 2023, avec transposition obligatoire dans le droit national des États membres avant octobre 2024. En France, la transposition est en cours via une loi portée par l'ANSSI. Par rapport à NIS 1, le périmètre explose : on passe d'environ 300 entités concernées à <strong>plus de 15 000 organisations</strong> en France, incluant désormais les PME de certains secteurs critiques (énergie, transport, santé, eaux, etc.).</p>
+
+      <p><strong>Ce que ça implique concrètement :</strong> Les organisations concernées devront (1) <strong>notifier les incidents</strong> de sécurité significatifs à l'ANSSI sous 24h, (2) mettre en place une <strong>politique de sécurité</strong> documentée (gestion des accès, chiffrement, sauvegardes), (3) <strong>former la direction</strong> aux enjeux cyber, et (4) évaluer la sécurité de leur <strong>chaîne de fournisseurs</strong>. Les sanctions peuvent atteindre 10 millions d'euros ou 2% du chiffre d'affaires mondial.</p>
+
+      <p><strong>Pourquoi ça me concerne en tant qu'admin sys ?</strong> Dans mon alternance chez SNCF Voyageurs, groupe de transport critique, NIS 2 s'applique directement. Cela renforce l'importance de tout ce que je fais au quotidien : gestion rigoureuse des accès AD, supervision des équipements, procédures de sauvegarde, traçabilité des interventions. La documentation que je produis dans GLPI (tickets, historique) prend une nouvelle dimension : elle constitue une <strong>preuve de conformité</strong> en cas d'audit.</p>
+
+      <ul class="source-list">
+        <li><a href="https://www.anssi.fr/actualite/nis2-ce-que-vous-devez-savoir/" target="_blank" rel="noopener">ANSSI — NIS 2 en détail</a></li>
+        <li><a href="https://www.lemagit.fr/actualites/nis2" target="_blank" rel="noopener">LeMagIT — Dossier NIS 2</a></li>
+        <li><a href="https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A32022L2555" target="_blank" rel="noopener">Texte officiel EU — Directive NIS 2</a></li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <div class="brand" style="margin-bottom: 14px;"><span class="brand-mark">DC</span><span>Dimitri COLL</span></div>
+        <p class="text-muted" style="font-size: 0.9rem;">Portfolio BTS SIO SISR · Session 2026.</p>
+      </div>
+      <div><h4>Navigation</h4><ul>
+        <li><a href="about.html">À propos</a></li>
+        <li><a href="competences.html">Compétences</a></li>
+        <li><a href="projets.html">Projets</a></li>
+        <li><a href="veille.html">Veille</a></li>
+      </ul></div>
+      <div><h4>Contact</h4><ul>
+        <li><a href="contact.html">Me contacter</a></li>
+      </ul></div>
+    </div>
+    <div class="copy"><span>© 2026 Dimitri COLL</span><span>BTS SIO SISR · Session 2026</span></div>
+  </div>
+</footer>
+<script src="js/main.js"></script>
+</body>
+</html>
