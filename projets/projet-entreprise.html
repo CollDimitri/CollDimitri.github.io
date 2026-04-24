@@ -3,9 +3,75 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Projet Entreprise SNCF — Dimitri COLL | BTS SIO SISR</title>
+  <title>Projet Entreprise — SNCF Voyageurs | Dimitri COLL</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2338BDF8'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' font-family='monospace' font-weight='700' font-size='28' fill='%230B1120'%3EDC%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .mission-block {
+      margin-bottom: 60px;
+    }
+    .mission-block h2 {
+      font-size: 1.35rem;
+      margin-bottom: 6px;
+    }
+    .mission-block .mission-intro {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+      max-width: 65ch;
+    }
+    .mission-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 56px 0;
+    }
+    .kpi-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 10px;
+      padding: 14px 20px;
+      min-width: 160px;
+    }
+    .kpi .kpi-val {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .kpi .kpi-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .task-list {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .task-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 0.93rem;
+      color: var(--text-muted);
+    }
+    .task-list li::before {
+      content: "▸";
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .task-list li strong { color: var(--text); }
+  </style>
 </head>
 <body>
 
@@ -35,152 +101,168 @@
         <span>Projet Entreprise</span>
       </div>
       <div class="eyebrow">Alternance · 2024 — 2026 · En cours</div>
-      <h1>Mes missions chez<br/>SNCF Voyageurs.</h1>
-      <p style="max-width: 72ch; font-size: 1.05rem;">
-        En alternance depuis septembre 2024 au sein du groupe <strong>SNCF Voyageurs</strong>, j'interviens sur quatre axes principaux : déploiement et industrialisation du parc, administration Active Directory, maintenance terrain et support critique.
+      <h1>SNCF Voyageurs —<br/>mes missions au quotidien.</h1>
+      <p style="max-width: 70ch; font-size: 1.05rem;">
+        En alternance depuis septembre 2024, rythme <strong>2 à 3 jours en entreprise</strong> par semaine. J'interviens sur quatre missions principales : déploiement du parc, Active Directory, maintenance terrain et support N1/N2.
       </p>
       <div class="meta-row">
         <div class="meta"><span class="meta-label">Entreprise</span><span class="meta-value">SNCF Voyageurs</span></div>
-        <div class="meta"><span class="meta-label">Durée</span><span class="meta-value">2024 — 2026 (en cours)</span></div>
-        <div class="meta"><span class="meta-label">Rythme</span><span class="meta-value">Alternance (3 sem. / 1 sem.)</span></div>
+        <div class="meta"><span class="meta-label">Durée</span><span class="meta-value">Sept. 2024 — Juin 2026</span></div>
+        <div class="meta"><span class="meta-label">Rythme</span><span class="meta-value">2–3 jours / semaine en entreprise</span></div>
         <div class="meta"><span class="meta-label">Lieu</span><span class="meta-value">Paris</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Mission 1 -->
 <section class="section">
   <div class="container">
-    <div class="reveal">
+
+    <!-- MISSION 1 : DÉPLOIEMENT -->
+    <div class="mission-block reveal">
       <div class="eyebrow">Mission 1</div>
       <h2>Déploiement &amp; Industrialisation du Parc</h2>
+      <p class="mission-intro">
+        Préparation et déploiement de postes Windows 11 modifiés pour la SNCF — version allégée et pré-configurée selon les standards du groupe.
+      </p>
+
+      <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 24px;">
+        <div class="card">
+          <h3>Préparation des postes</h3>
+          <ul class="task-list">
+            <li><strong>Image master Windows 11</strong> — version modifiée SNCF avec les applications métier, les paramètres de sécurité groupe et les restrictions déjà appliquées</li>
+            <li><strong>Déploiement par clonage</strong> — copie de l'image sur les nouveaux postes pour garantir une configuration identique</li>
+            <li><strong>Script de post-configuration</strong> — renommage du poste, jonction au domaine AD, mise à jour automatique</li>
+            <li><strong>Inventaire GLPI</strong> — enregistrement du matériel, numéro de série, affectation à l'utilisateur</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Gestion du parc</h3>
+          <ul class="task-list">
+            <li><strong>Réception et contrôle</strong> du matériel entrant (étiquetage, test, enregistrement)</li>
+            <li><strong>Remplacement en fin de vie</strong> — migration des données utilisateur, remise à neuf pour réaffectation</li>
+            <li><strong>Suivi des sorties de stock</strong> et mise à jour de l'inventaire</li>
+            <li><strong>Recyclage</strong> des équipements obsolètes selon la procédure interne</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <div class="grid" style="grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 32px; margin-top: 28px;">
-      <div class="card reveal">
-        <h3>Ce que je fais</h3>
-        <p>Préparation, configuration et déploiement de postes de travail Windows 10/11 en masse. Chaque poste est préparé selon une <strong>image de référence standard</strong> (OS, pilotes, logiciels métier, paramètres de sécurité) avant d'être remis à l'utilisateur.</p>
-        <p>Je gère également les <strong>sorties de stock</strong> (réception, inventaire, étiquetage), le <strong>remplacement de postes en fin de vie</strong> et la migration des données utilisateurs lors de renouvellement de matériel.</p>
-      </div>
-      <div class="card reveal">
-        <h3>Technologies &amp; méthodes</h3>
-        <ul style="margin: 0; padding-left: 18px; display: grid; gap: 6px;">
-          <li>Création et maintenance d'images master Windows</li>
-          <li>Déploiement par clonage (Clonezilla) sur parcs homogènes</li>
-          <li>Scripts PowerShell de post-configuration (renommage, jonction domaine, installation logiciels)</li>
-          <li>Jonction au domaine AD et affectation dans les bonnes OU</li>
-          <li>Inventaire et suivi dans <strong>GLPI</strong></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
+    <div class="mission-divider"></div>
 
-<!-- Mission 2 -->
-<section class="section" style="background: var(--bg-elev);">
-  <div class="container">
-    <div class="reveal">
+    <!-- MISSION 2 : AD -->
+    <div class="mission-block reveal">
       <div class="eyebrow">Mission 2</div>
-      <h2>Administration Système — Active Directory</h2>
-    </div>
+      <h2>Administration Active Directory</h2>
+      <p class="mission-intro">
+        Gestion quotidienne des comptes, droits et groupes dans l'Active Directory de SNCF Voyageurs.
+      </p>
 
-    <div class="grid" style="grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 32px; margin-top: 28px;">
-      <div class="card reveal">
-        <h3>Ce que je fais</h3>
-        <p>Gestion quotidienne des comptes et des droits dans l'<strong>Active Directory</strong> de SNCF Voyageurs. Cela comprend la création, modification et désactivation de comptes utilisateurs, la gestion des groupes de sécurité, et la résolution de problèmes d'authentification.</p>
-        <p>Je contribue aussi au suivi des <strong>GPO</strong> (stratégies de groupe) existantes et à leur débogage via <code>gpresult</code> et les journaux d'événements Windows.</p>
+      <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 24px;">
+        <div class="card">
+          <h3>Opérations courantes</h3>
+          <ul class="task-list">
+            <li><strong>Création de comptes</strong> à l'arrivée de nouveaux agents — placement dans la bonne OU, attribution des groupes</li>
+            <li><strong>Désactivation</strong> des comptes lors des départs</li>
+            <li><strong>Réinitialisation de mots de passe</strong> et déblocage de comptes verrouillés</li>
+            <li><strong>Gestion des groupes</strong> de sécurité — ajout/retrait selon les besoins métier</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Exemple concret</h3>
+          <p style="color: var(--text-muted); font-size: 0.93rem; line-height: 1.7;">
+            Pour une arrivée de 12 nouveaux agents, j'ai écrit un script PowerShell qui lit un CSV fourni par les RH, crée les comptes dans la bonne OU, leur attribue les bons groupes et envoie un mail avec les identifiants provisoires. <strong>3 minutes au lieu de 2 heures.</strong>
+          </p>
+        </div>
       </div>
-      <div class="card reveal">
-        <h3>Opérations récurrentes</h3>
-        <ul style="margin: 0; padding-left: 18px; display: grid; gap: 6px;">
-          <li>Création/suppression de comptes (arrivées/départs)</li>
-          <li>Réinitialisation de mots de passe selon la procédure interne</li>
-          <li>Ajout/retrait de groupes de sécurité</li>
-          <li>Déblocage de comptes verrouillés (<code>Unlock-ADAccount</code>)</li>
-          <li>Vérification des GPO appliquées sur les postes (<code>gpresult /r</code>)</li>
-          <li>Rapport mensuel des comptes inactifs (+90 jours)</li>
-        </ul>
-      </div>
     </div>
 
-    <div class="note-box mt-4 reveal">
-      <strong>Exemple concret</strong> — Lors d'une arrivée de 12 nouveaux agents, j'ai automatisé la création des comptes via un script PowerShell qui lit un fichier CSV fourni par les RH, crée les comptes dans la bonne OU, leur attribue les groupes correspondant à leur service, et envoie un e-mail automatique avec les identifiants provisoires. Durée : 3 minutes au lieu de 2 heures en manuel.
-    </div>
-  </div>
-</section>
+    <div class="mission-divider"></div>
 
-<!-- Mission 3 -->
-<section class="section">
-  <div class="container">
-    <div class="reveal">
+    <!-- MISSION 3 : MAINTENANCE -->
+    <div class="mission-block reveal">
       <div class="eyebrow">Mission 3</div>
       <h2>Maintenance Informatique Terrain</h2>
+      <p class="mission-intro">
+        Interventions physiques sur les postes, périphériques et infrastructure réseau des sites.
+      </p>
+
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>Matériel</h3>
+          <ul class="task-list">
+            <li>Diagnostic et remplacement de composants (RAM, SSD, alimentation)</li>
+            <li>Réinstallation OS sur postes défaillants</li>
+            <li>Réparation de profils utilisateurs corrompus</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Réseau &amp; Périphériques</h3>
+          <ul class="task-list">
+            <li>Câblage RJ45 et raccordement aux baies de brassage</li>
+            <li>Configuration d'imprimantes réseau</li>
+            <li>Diagnostic connectivité (ping, ipconfig, nslookup)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Mises à jour</h3>
+          <ul class="task-list">
+            <li>Déploiement des patches Windows via les outils internes</li>
+            <li>Intervention sur les postes qui n'ont pas reçu les correctifs</li>
+            <li>Vérification des antivirus et EDR</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <div class="grid grid-3 mt-4">
-      <div class="card reveal">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-        </div>
-        <h3>Diagnostic &amp; Réparation</h3>
-        <p>Intervention sur les pannes matérielles (RAM, HDD/SSD, alimentation, écran) et logicielles (OS corrompu, profil utilisateur cassé, pilotes défectueux). Remplacement de composants et remise en service.</p>
-      </div>
-      <div class="card reveal">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        </div>
-        <h3>Périphériques &amp; Réseau</h3>
-        <p>Connexion et configuration de périphériques (imprimantes réseau, scanners, douchettes). Câblage RJ45, raccordement aux baies de brassage, vérification de la connectivité réseau (PING, IPCONFIG, NSLOOKUP).</p>
-      </div>
-      <div class="card reveal">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-        </div>
-        <h3>Mises à jour &amp; Patches</h3>
-        <p>Déploiement des mises à jour Windows via les outils internes, vérification du statut des postes, intervention sur les postes qui n'ont pas reçu les correctifs critiques.</p>
-      </div>
-    </div>
-  </div>
-</section>
+    <div class="mission-divider"></div>
 
-<!-- Mission 4 -->
-<section class="section" style="background: var(--bg-elev);">
-  <div class="container">
-    <div class="reveal">
+    <!-- MISSION 4 : SUPPORT -->
+    <div class="mission-block reveal">
       <div class="eyebrow">Mission 4</div>
-      <h2>Support Critique N1/N2 &amp; Terrain</h2>
+      <h2>Support Critique N1/N2</h2>
+      <p class="mission-intro">
+        Traitement des incidents du quotidien via le ticketing interne, avec escalade N2 sur les cas complexes.
+      </p>
+
+      <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 24px;">
+        <div class="card">
+          <h3>Support N1</h3>
+          <ul class="task-list">
+            <li>Réinitialisation de mots de passe, déblocage de comptes</li>
+            <li>Problèmes de connexion VPN et accès distants</li>
+            <li>Configuration de périphériques (imprimantes, écrans, douchettes)</li>
+            <li>Assistance aux utilisateurs par téléphone ou à distance</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Support N2</h3>
+          <ul class="task-list">
+            <li>Pannes applicatives et conflits logiciels</li>
+            <li>Postes qui ne rejoignent pas le domaine AD</li>
+            <li>Incidents réseau locaux (conflits IP, VLAN mal configuré)</li>
+            <li><strong>Intervention terrain prioritaire</strong> sur les postes critiques (agents de conduite, aiguillage)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="kpi-val">&lt; 1h</div>
+          <div class="kpi-label">Prise en charge N1 (SLA cible)</div>
+        </div>
+        <div class="kpi" style="border-left-color: #10B981;">
+          <div class="kpi-val" style="color:#10B981;">&lt; 2h</div>
+          <div class="kpi-label">Intervention terrain critique</div>
+        </div>
+        <div class="kpi" style="border-left-color: #F59E0B;">
+          <div class="kpi-val" style="color:#F59E0B;">100%</div>
+          <div class="kpi-label">Tickets tracés dans l'outil</div>
+        </div>
+      </div>
     </div>
 
-    <div class="grid" style="grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 32px; margin-top: 28px;">
-      <div class="card reveal">
-        <h3>Support N1 — Prise en charge initiale</h3>
-        <p>Traitement des tickets entrants via l'outil de ticketing interne. À ce niveau : réinitialisation de mots de passe, déblocage de comptes AD, résolution des problèmes de connexion VPN, aide à la configuration des périphériques. <strong>Objectif SLA : prise en charge sous 1h.</strong></p>
-        <p>Chaque ticket est documenté avec la cause, la solution appliquée et le temps de résolution, alimentant ainsi la base de connaissance interne.</p>
-      </div>
-      <div class="card reveal">
-        <h3>Support N2 — Incidents complexes</h3>
-        <p>Escalade des tickets N1 non résolus ou des incidents techniques plus complexes : problèmes d'application métier, postes qui ne rejoignent pas le domaine, pannes réseau locales, conflits d'adresses IP. Pour les incidents bloquants sur des postes critiques (agents de conduite, aiguillage), <strong>intervention terrain en moins de 2h</strong>.</p>
-        <p>Collaboration avec les équipes réseau et sécurité pour les incidents impactant plusieurs sites.</p>
-      </div>
-    </div>
-
-    <div class="grid grid-3 mt-4">
-      <div class="card reveal" style="border-left: 3px solid var(--accent);">
-        <div style="font-size: 2rem; font-weight: 800; color: var(--accent); margin-bottom: 4px;">&lt; 1h</div>
-        <p class="text-muted" style="margin: 0; font-size: 0.88rem;">Prise en charge des tickets N1 (SLA cible)</p>
-      </div>
-      <div class="card reveal" style="border-left: 3px solid #10B981;">
-        <div style="font-size: 2rem; font-weight: 800; color: #10B981; margin-bottom: 4px;">&lt; 2h</div>
-        <p class="text-muted" style="margin: 0; font-size: 0.88rem;">Intervention terrain sur incidents bloquants</p>
-      </div>
-      <div class="card reveal" style="border-left: 3px solid #F59E0B;">
-        <div style="font-size: 2rem; font-weight: 800; color: #F59E0B; margin-bottom: 4px;">100%</div>
-        <p class="text-muted" style="margin: 0; font-size: 0.88rem;">Des tickets documentés dans l'outil de ticketing</p>
-      </div>
-    </div>
-
-    <div class="btn-row mt-4 reveal">
+    <div class="btn-row reveal">
       <a href="../projets.html" class="btn btn-ghost">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
         Tous les projets
@@ -190,6 +272,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
     </div>
+
   </div>
 </section>
 

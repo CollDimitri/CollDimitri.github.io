@@ -7,79 +7,102 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2338BDF8'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' font-family='monospace' font-weight='700' font-size='28' fill='%230B1120'%3EDC%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    .veille-article {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px;
-      margin-bottom: 32px;
+    .veille-body {
+      max-width: 820px;
     }
-    .veille-article h3 {
-      font-size: 1.25rem;
-      margin-bottom: 10px;
-    }
-    .veille-article .meta-line {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 18px;
-    }
-    .veille-article p { color: var(--text-muted); line-height: 1.75; margin-bottom: 14px; }
-    .veille-article p:last-child { margin-bottom: 0; }
-    .veille-article strong { color: var(--text); }
-    .source-list {
-      list-style: none;
-      padding: 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 18px;
-      padding-top: 18px;
+    .veille-body h2 {
+      font-size: 1.5rem;
+      margin: 48px 0 10px;
+      padding-top: 48px;
       border-top: 1px solid var(--border);
     }
-    .source-list li a {
+    .veille-body h2:first-of-type {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+    .veille-body p {
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+    .veille-body p strong { color: var(--text); }
+    .fact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin: 20px 0;
+    }
+    .fact {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 12px 18px;
+      flex: 1;
+      min-width: 180px;
+    }
+    .fact .val {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1.1;
+    }
+    .fact .desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .sources-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+    .sources-bar a {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 14px;
-      background: rgba(56,189,248,0.07);
-      border: 1px solid rgba(56,189,248,0.25);
+      padding: 7px 14px;
+      background: rgba(56,189,248,0.06);
+      border: 1px solid rgba(56,189,248,0.2);
       border-radius: 20px;
       color: var(--accent);
-      font-size: 0.83rem;
+      font-size: 0.82rem;
       font-weight: 600;
       text-decoration: none;
       transition: background .2s;
     }
-    .source-list li a:hover { background: rgba(56,189,248,0.18); }
-    .source-list li a::before { content: "🔗"; font-size: 0.78rem; }
-    .sources-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 16px;
-    }
-    .source-card {
+    .sources-bar a:hover { background: rgba(56,189,248,0.15); }
+    .sources-bar a::before { content: "🔗"; font-size: 0.76rem; }
+    .schema-box {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 18px;
-      text-decoration: none;
-      color: inherit;
-      transition: border-color .2s, transform .15s;
-      display: block;
-    }
-    .source-card:hover { border-color: var(--accent); transform: translateY(-3px); }
-    .source-card .sc-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      color: var(--accent);
+      padding: 20px 24px;
+      margin: 20px 0;
       font-family: var(--font-mono);
-      margin-bottom: 6px;
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: var(--text-muted);
     }
-    .source-card h3 { font-size: 0.95rem; margin-bottom: 4px; }
-    .source-card p  { font-size: 0.82rem; color: var(--text-muted); margin: 0; }
+    .schema-box .hl { color: var(--accent); }
+    .schema-box .red { color: #F87171; }
+    .schema-box .green { color: #34D399; }
+    .tag-inline {
+      display: inline-block;
+      background: rgba(56,189,248,0.1);
+      color: var(--accent);
+      border: 1px solid rgba(56,189,248,0.25);
+      border-radius: 4px;
+      padding: 1px 7px;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      vertical-align: middle;
+    }
   </style>
 </head>
 <body>
@@ -104,166 +127,113 @@
 <section class="page-hero">
   <div class="container">
     <div class="reveal">
-      <div class="eyebrow">Veille technologique</div>
-      <h1>Rester à jour,<br/>une compétence à part entière.</h1>
+      <div class="eyebrow">Veille technologique · Cybersécurité</div>
+      <h1>Le Ransomware-as-a-Service :<br/>comment ça marche et pourquoi ça explose.</h1>
       <p style="max-width: 68ch; font-size: 1.05rem;">
-        Thème principal : <strong>cybersécurité défensive, ransomwares et protection des systèmes d'entreprise</strong>. Je suis ce sujet au quotidien via un ensemble de sources institutionnelles et spécialisées.
+        Sujet suivi depuis 2024. Sources&nbsp;: ANSSI, CERT-FR, BleepingComputer, LeMagIT. Mise à jour régulière.
       </p>
     </div>
   </div>
 </section>
 
-<!-- SOURCES DE VEILLE -->
-<section class="section" style="background: var(--bg-elev);">
-  <div class="container">
-    <div class="reveal">
-      <div class="eyebrow">Sources suivies</div>
-      <h2>Où je m'informe</h2>
-    </div>
-    <div class="sources-grid mt-4 reveal">
-
-      <a href="https://www.cert.ssi.gouv.fr/" target="_blank" rel="noopener" class="source-card">
-        <div class="sc-label">Institutionnel · France</div>
-        <h3>CERT-FR / ANSSI</h3>
-        <p>Alertes de sécurité, avis et bulletins officiels du gouvernement français. Ma première source.</p>
-      </a>
-
-      <a href="https://www.bleepingcomputer.com/" target="_blank" rel="noopener" class="source-card">
-        <div class="sc-label">Actualité · EN</div>
-        <h3>BleepingComputer</h3>
-        <p>Référence mondiale pour les incidents ransomwares, les vulnérabilités et les correctifs en temps réel.</p>
-      </a>
-
-      <a href="https://www.lemondeinformatique.fr/" target="_blank" rel="noopener" class="source-card">
-        <div class="sc-label">Presse · FR</div>
-        <h3>Le Monde Informatique</h3>
-        <p>Actu IT française : infrastructure, cloud, cybersécurité, réseaux, projets d'entreprise.</p>
-      </a>
-
-      <a href="https://www.lemagit.fr/" target="_blank" rel="noopener" class="source-card">
-        <div class="sc-label">Presse · FR</div>
-        <h3>LeMagIT</h3>
-        <p>Analyses approfondies pour les professionnels IT. Dossiers sur les ransomwares, EDR, SIEM.</p>
-      </a>
-
-      <a href="https://techcommunity.microsoft.com/" target="_blank" rel="noopener" class="source-card">
-        <div class="sc-label">Officiel · Microsoft</div>
-        <h3>Microsoft Tech Community</h3>
-        <p>Blog technique officiel Microsoft : mises à jour Windows Server, Active Directory, Azure AD.</p>
-      </a>
-
-      <a href="https://cvefeed.io/" target="_blank" rel="noopener" class="source-card">
-        <div class="sc-label">Outil · CVE</div>
-        <h3>CVE Feed</h3>
-        <p>Flux de vulnérabilités CVE en temps réel. Utile pour surveiller les failles des produits que j'utilise.</p>
-      </a>
-
-    </div>
-  </div>
-</section>
-
-<!-- ARTICLES DE VEILLE DÉTAILLÉS -->
 <section class="section">
   <div class="container">
-    <div class="reveal">
-      <div class="eyebrow">Articles de veille analysés</div>
-      <h2>4 sujets que j'ai creusés en détail</h2>
-    </div>
+    <div class="veille-body reveal">
 
-    <!-- Veille 1 : Ransomware RaaS -->
-    <div class="veille-article reveal">
-      <div class="meta-line">
-        <span class="tag tag-accent">Cybersécurité</span>
-        <span class="tag">Ransomware</span>
-        <span class="tag">2024-2025</span>
+      <!-- BLOC 1 : C'est quoi -->
+      <h2>C'est quoi le RaaS ?</h2>
+
+      <p>Le <strong>Ransomware-as-a-Service</strong> est un modèle économique criminel dans lequel un groupe développe une plateforme complète d'attaque (ransomware, infrastructure, négociation, support victime) et la loue à des <strong>affiliés</strong>. Ces affiliés n'ont pas besoin de compétences techniques : ils achètent l'accès, choisissent leurs cibles et reversent 20 à 30 % de la rançon au groupe.</p>
+
+      <p>Le changement fondamental : avant 2019, une attaque ransomware demandait du savoir-faire. Aujourd'hui, c'est une <strong>franchise criminelle</strong> avec tableau de bord, chat de négociation et hotline. Le groupe s'occupe du développement, l'affilié s'occupe de l'intrusion.</p>
+
+      <div class="schema-box">
+        <span class="hl">Groupe RaaS</span> (LockBit, BlackCat, Akira…)<br/>
+        &nbsp;&nbsp;├── Développe le ransomware + infrastructure<br/>
+        &nbsp;&nbsp;├── Gère le paiement en cryptomonnaie<br/>
+        &nbsp;&nbsp;└── Recrute des <span class="hl">affiliés</span> sur des forums darknet<br/>
+        <br/>
+        <span class="hl">Affilié</span> (peu ou pas qualifié)<br/>
+        &nbsp;&nbsp;├── Achète l'accès initial (via phishing, RDP exposé, VPN vulnérable)<br/>
+        &nbsp;&nbsp;├── <span class="red">Déploie le ransomware</span> sur le réseau cible<br/>
+        &nbsp;&nbsp;└── Reverse 20-30% à la rançon au groupe
       </div>
-      <h3>Le modèle Ransomware-as-a-Service (RaaS) : pourquoi les PME sont les premières victimes</h3>
 
-      <p><strong>Qu'est-ce que c'est ?</strong> Avant, une attaque ransomware demandait des compétences techniques avancées. Aujourd'hui, des groupes comme <strong>LockBit</strong>, <strong>BlackCat (ALPHV)</strong> ou <strong>Akira</strong> mettent leur infrastructure clé-en-main à la location pour des "affiliés" : n'importe qui peut louer un ransomware, l'envoyer à des victimes, et reverser 20-30% des rançons au groupe. C'est le modèle RaaS.</p>
-
-      <p><strong>Chiffres qui font froid dans le dos :</strong> En 2024, l'ANSSI a recensé plus de 400 incidents cybersécurité significatifs en France. 70% des victimes de ransomwares sont des PME ou des collectivités — précisément parce qu'elles ont moins de ressources pour se défendre. Le coût moyen d'une attaque pour une PME française dépasse <strong>50 000 €</strong> (remédiation + arrêt d'activité).</p>
-
-      <p><strong>Ce que ça change pour un admin sys :</strong> La réponse n'est plus seulement technique. Elle est aussi organisationnelle. Concrètement, voilà ce que je retiens : (1) la <strong>segmentation réseau</strong> (VLAN, DMZ) limite la propagation latérale une fois qu'un poste est infecté ; (2) les <strong>sauvegardes hors ligne</strong> (règle 3-2-1) sont l'assurance-vie de l'entreprise ; (3) le <strong>principe de moindre privilège</strong> dans Active Directory (pas de compte admin pour tout le monde) réduit drastiquement la surface d'attaque ; (4) la <strong>sensibilisation des utilisateurs</strong> au phishing reste le premier rempart — 90% des infections commencent par un email.</p>
-
-      <p><strong>Cas concret que j'ai suivi :</strong> En novembre 2024, le groupe Akira a ciblé plusieurs PME françaises du secteur transport. L'ANSSI a publié un bulletin CERT-FR avec les IOC (indicateurs de compromission) et les recommandations. J'ai consulté ce bulletin et vérifié que les règles pfSense de mon projet couvraient les flux utilisés par ce groupe.</p>
-
-      <ul class="source-list">
-        <li><a href="https://www.cert.ssi.gouv.fr/actualite/CERTFR-2024-ACT-001/" target="_blank" rel="noopener">CERT-FR — Rapport annuel 2024</a></li>
-        <li><a href="https://www.bleepingcomputer.com/tag/akira-ransomware/" target="_blank" rel="noopener">BleepingComputer — Akira</a></li>
-        <li><a href="https://www.lemagit.fr/actualites/ransomware" target="_blank" rel="noopener">LeMagIT — Dossier Ransomware</a></li>
-        <li><a href="https://www.anssi.fr/actualite/panorama-de-la-cybermenace-2024/" target="_blank" rel="noopener">ANSSI — Panorama cybermenace</a></li>
-      </ul>
-    </div>
-
-    <!-- Veille 2 : Windows 11 24H2 -->
-    <div class="veille-article reveal">
-      <div class="meta-line">
-        <span class="tag tag-accent">Systèmes</span>
-        <span class="tag">Windows 11</span>
-        <span class="tag">2024</span>
+      <!-- CHIFFRES -->
+      <div class="fact-row">
+        <div class="fact">
+          <div class="val">+400</div>
+          <div class="desc">incidents cybersécurité significatifs en France en 2024 (ANSSI)</div>
+        </div>
+        <div class="fact">
+          <div class="val">70%</div>
+          <div class="desc">des victimes ransomware sont des PME ou collectivités</div>
+        </div>
+        <div class="fact">
+          <div class="val">50 000€</div>
+          <div class="desc">coût moyen d'une attaque pour une PME française (remédiation + arrêt)</div>
+        </div>
+        <div class="fact">
+          <div class="val">90%</div>
+          <div class="desc">des infections démarrent par un e-mail de phishing</div>
+        </div>
       </div>
-      <h3>Windows 11 24H2 : ce que ça change pour un administrateur de parc</h3>
 
-      <p><strong>Contexte :</strong> Microsoft a déployé la mise à jour majeure <strong>Windows 11 24H2</strong> à partir d'octobre 2024. Pour un admin de parc qui gère des postes Windows (mon quotidien chez SNCF), cette mise à jour a des implications concrètes à anticiper avant un déploiement.</p>
+      <!-- BLOC 2 : Groupes principaux -->
+      <h2>Les groupes actifs en 2024-2025</h2>
 
-      <p><strong>Nouveautés qui m'intéressent directement :</strong> La 24H2 renforce le chiffrement par défaut sur les appareils compatibles (<strong>BitLocker activé automatiquement</strong> sur les éditions Home et Pro, ce qui n'était pas le cas avant). Pour un parc géré via Active Directory, cela signifie qu'il faut impérativement configurer la <strong>sauvegarde des clés de récupération BitLocker dans l'AD</strong> avant la migration — sinon un utilisateur bloqué ne peut plus accéder à son poste. C'est un point de vigilance que j'ai remonté en entreprise.</p>
+      <p><strong>LockBit 3.0</strong> — le groupe le plus actif jusqu'en février 2024, quand Europol démantèle une partie de son infrastructure. Malgré le takedown, les affiliés continuent d'opérer avec des variantes.</p>
 
-      <p><strong>Compatibilité et déploiement :</strong> La 24H2 exige <strong>Secure Boot</strong> et <strong>TPM 2.0</strong>. Dans un parc avec des machines anciennes, cela peut poser problème. J'ai appris à vérifier la compatibilité TPM via PowerShell (<code>Get-WmiObject -Namespace "root\CIMv2\Security\MicrosoftTpm" -Class Win32_Tpm</code>) avant tout déploiement en masse. Pour les machines incompatibles, on reste sur Windows 10 LTSC (support jusqu'en 2025 pour la version grand public, 2029 pour LTSC).</p>
+      <p><strong>Akira</strong> — ciblage massif de PME et ETI en Europe depuis 2023. Particulièrement actif dans les secteurs transport, logistique et industrie. L'ANSSI a publié plusieurs bulletins CERT-FR sur ce groupe en 2024. <span class="tag-inline">CERT-FR-2024</span></p>
 
-      <p><strong>Ce que j'ai fait :</strong> Avant de déployer la mise à jour sur les postes de mon site, j'ai d'abord testé sur une VM, vérifié les GPO existantes pour identifier les éventuelles incompatibilités, et mis en place la sauvegarde des clés BitLocker dans l'AD.</p>
+      <p><strong>BlackCat / ALPHV</strong> — écrit en Rust, ce qui le rend plus difficile à détecter par les antivirus classiques. A ciblé des hôpitaux, des assureurs et des infrastructures critiques. Démantèlement partiel par le FBI en décembre 2023, mais les affiliés rebondissent rapidement.</p>
 
-      <ul class="source-list">
-        <li><a href="https://techcommunity.microsoft.com/t5/windows-it-pro-blog/bg-p/Windows10Blog" target="_blank" rel="noopener">Microsoft Tech Community — Windows IT Pro</a></li>
-        <li><a href="https://learn.microsoft.com/fr-fr/windows/whats-new/windows-11-version-24h2" target="_blank" rel="noopener">Microsoft Learn — Nouveautés 24H2</a></li>
-        <li><a href="https://www.bleepingcomputer.com/tag/windows-11/" target="_blank" rel="noopener">BleepingComputer — Windows 11</a></li>
-      </ul>
-    </div>
+      <p><strong>Cl0p</strong> — exploitation massive de vulnérabilités zero-day dans des logiciels de transfert de fichiers (MOVEit, GoAnywhere). Pas de chiffrement : vol de données puis extorsion. Des milliers d'entreprises touchées en 2023-2024.</p>
 
-    <!-- Veille 3 : CVE Windows / Patch Tuesday -->
-    <div class="veille-article reveal">
-      <div class="meta-line">
-        <span class="tag tag-accent">Sécurité</span>
-        <span class="tag">CVE</span>
-        <span class="tag">Patch Tuesday</span>
+      <!-- BLOC 3 : Comment ils entrent -->
+      <h2>Comment ils rentrent dans le réseau</h2>
+
+      <p>Les <strong>vecteurs d'entrée initiaux</strong> les plus courants selon le rapport ANSSI 2024 :</p>
+
+      <div class="schema-box">
+        <span class="red">1. Phishing ciblé</span> → pièce jointe ou lien malveillant → exécution d'un loader<br/>
+        <span class="red">2. VPN / RDP exposé</span> → credential stuffing ou exploitation de CVE non patchées<br/>
+        <span class="red">3. Supply chain</span> → compromission d'un prestataire IT pour atteindre ses clients<br/>
+        <span class="red">4. Achat d'accès</span> → l'affilié achète un accès déjà établi sur des forums (Initial Access Broker)<br/>
+        <br/>
+        <span class="hl">Après l'entrée :</span><br/>
+        &nbsp;&nbsp;→ Mouvement latéral (exploitation AD, Pass-the-Hash, Mimikatz)<br/>
+        &nbsp;&nbsp;→ Élévation de privilèges → accès Domain Admin<br/>
+        &nbsp;&nbsp;→ Exfiltration des données (double extorsion)<br/>
+        &nbsp;&nbsp;→ <span class="red">Chiffrement de masse</span> + destruction des sauvegardes accessibles
       </div>
-      <h3>Patch Tuesday Microsoft : comment je suis les CVE critiques chaque mois</h3>
 
-      <p><strong>C'est quoi le Patch Tuesday ?</strong> Chaque deuxième mardi du mois, Microsoft publie ses correctifs de sécurité. C'est un rendez-vous incontournable pour tout admin Windows. En décembre 2024, Microsoft a corrigé <strong>71 vulnérabilités</strong>, dont 16 critiques. Parmi elles, une faille dans le spouleur d'impression Windows (<strong>CVE-2024-49070</strong>) permettait une élévation de privilèges — exactement le type de vulnérabilité exploité dans les premières phases d'une attaque ransomware.</p>
+      <!-- BLOC 4 : La défense -->
+      <h2>Ce que ça implique côté défense</h2>
 
-      <p><strong>Mon processus de veille :</strong> Je consulte deux sources pour chaque Patch Tuesday. D'abord le <strong>Security Update Guide de Microsoft</strong> pour la liste officielle des CVE. Ensuite <strong>BleepingComputer</strong> pour comprendre lesquelles sont réellement critiques dans mon environnement (certaines CVE "critiques" n'impactent pas les configurations que je gère). Je me concentre sur les CVE avec un score <strong>CVSS ≥ 8.0</strong> qui concernent des composants que j'utilise (spouleur, Active Directory, RDP, SMB).</p>
+      <p>C'est là où ça rejoint directement mon travail d'admin sys. Le ransomware n'est pas un problème de logiciel antivirus — c'est un problème d'<strong>architecture et d'hygiène</strong>.</p>
 
-      <p><strong>Dans la pratique :</strong> Dès qu'une CVE critique touche des produits de mon parc, je remonte l'information à mon responsable et je planifie le déploiement du patch via Windows Update for Business ou WSUS. Pour les failles zero-day (exploitées avant le patch), j'applique les workarounds recommandés par Microsoft en attendant le correctif officiel.</p>
+      <p><strong>Segmentation réseau.</strong> Si tous les postes et serveurs sont dans le même réseau plat, un ransomware qui rentre sur un poste comptable peut chiffrer les serveurs en quelques minutes. Avec des VLAN bien configurés et un pare-feu (pfSense, Cisco), la propagation latérale est bloquée ou ralentie. C'est précisément l'objectif de mes projets VLAN et pfSense.</p>
 
-      <ul class="source-list">
-        <li><a href="https://msrc.microsoft.com/update-guide/" target="_blank" rel="noopener">Microsoft Security Update Guide</a></li>
-        <li><a href="https://www.bleepingcomputer.com/tag/patch-tuesday/" target="_blank" rel="noopener">BleepingComputer — Patch Tuesday</a></li>
-        <li><a href="https://cvefeed.io/" target="_blank" rel="noopener">CVE Feed — flux de vulnérabilités</a></li>
-        <li><a href="https://www.cert.ssi.gouv.fr/avis/" target="_blank" rel="noopener">CERT-FR — Avis de sécurité</a></li>
-      </ul>
-    </div>
+      <p><strong>Moindre privilège dans Active Directory.</strong> 80% des attaques ransomware aboutissent à une compromission du compte Domain Admin. Principe simple : aucun utilisateur standard n'a de droits d'admin local sur son poste. Les comptes admin AD ne servent qu'à l'administration, jamais à la navigation web ou à la lecture d'emails. Dans mon travail chez SNCF, je m'assure que les comptes créés ont uniquement les droits dont ils ont besoin.</p>
 
-    <!-- Veille 4 : NIS2 -->
-    <div class="veille-article reveal">
-      <div class="meta-line">
-        <span class="tag tag-accent">Réglementation</span>
-        <span class="tag">NIS 2</span>
-        <span class="tag">2025</span>
+      <p><strong>Sauvegardes hors ligne (règle 3-2-1).</strong> Les ransomwares ciblent en priorité les sauvegardes accessibles depuis le réseau. Une copie hors ligne (bande, NAS déconnecté, cloud avec MFA) garantit la reprise même en cas de chiffrement total. Sans ça, la seule option est de payer.</p>
+
+      <p><strong>Patch management.</strong> Akira et Cl0p exploitent massivement des CVE publiées et non corrigées. Maintenir un cycle de mise à jour mensuel (Patch Tuesday) sur tous les équipements réduit drastiquement la surface d'attaque exposée.</p>
+
+      <p><strong>Sensibilisation au phishing.</strong> Le vecteur n°1, c'est l'humain. Une simulation de phishing régulière et une formation courte sur les signes d'un email frauduleux réduisent significativement le risque d'infection initiale.</p>
+
+      <!-- SOURCES -->
+      <div class="sources-bar">
+        <a href="https://www.cert.ssi.gouv.fr/" target="_blank" rel="noopener">CERT-FR — Alertes officielles</a>
+        <a href="https://www.anssi.fr/actualite/panorama-de-la-cybermenace-2024/" target="_blank" rel="noopener">ANSSI — Panorama cybermenace 2024</a>
+        <a href="https://www.bleepingcomputer.com/tag/akira-ransomware/" target="_blank" rel="noopener">BleepingComputer — Akira</a>
+        <a href="https://www.lemagit.fr/actualites/ransomware" target="_blank" rel="noopener">LeMagIT — Dossier Ransomware</a>
+        <a href="https://www.bleepingcomputer.com/tag/lockbit/" target="_blank" rel="noopener">BleepingComputer — LockBit</a>
+        <a href="https://msrc.microsoft.com/update-guide/" target="_blank" rel="noopener">Microsoft Security Update Guide</a>
       </div>
-      <h3>La directive NIS 2 : quelles obligations pour les entreprises françaises ?</h3>
 
-      <p><strong>Qu'est-ce que NIS 2 ?</strong> La directive européenne <strong>NIS 2</strong> (Network and Information Security 2) est entrée en vigueur en janvier 2023, avec transposition obligatoire dans le droit national des États membres avant octobre 2024. En France, la transposition est en cours via une loi portée par l'ANSSI. Par rapport à NIS 1, le périmètre explose : on passe d'environ 300 entités concernées à <strong>plus de 15 000 organisations</strong> en France, incluant désormais les PME de certains secteurs critiques (énergie, transport, santé, eaux, etc.).</p>
-
-      <p><strong>Ce que ça implique concrètement :</strong> Les organisations concernées devront (1) <strong>notifier les incidents</strong> de sécurité significatifs à l'ANSSI sous 24h, (2) mettre en place une <strong>politique de sécurité</strong> documentée (gestion des accès, chiffrement, sauvegardes), (3) <strong>former la direction</strong> aux enjeux cyber, et (4) évaluer la sécurité de leur <strong>chaîne de fournisseurs</strong>. Les sanctions peuvent atteindre 10 millions d'euros ou 2% du chiffre d'affaires mondial.</p>
-
-      <p><strong>Pourquoi ça me concerne en tant qu'admin sys ?</strong> Dans mon alternance chez SNCF Voyageurs, groupe de transport critique, NIS 2 s'applique directement. Cela renforce l'importance de tout ce que je fais au quotidien : gestion rigoureuse des accès AD, supervision des équipements, procédures de sauvegarde, traçabilité des interventions. La documentation que je produis dans GLPI (tickets, historique) prend une nouvelle dimension : elle constitue une <strong>preuve de conformité</strong> en cas d'audit.</p>
-
-      <ul class="source-list">
-        <li><a href="https://www.anssi.fr/actualite/nis2-ce-que-vous-devez-savoir/" target="_blank" rel="noopener">ANSSI — NIS 2 en détail</a></li>
-        <li><a href="https://www.lemagit.fr/actualites/nis2" target="_blank" rel="noopener">LeMagIT — Dossier NIS 2</a></li>
-        <li><a href="https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A32022L2555" target="_blank" rel="noopener">Texte officiel EU — Directive NIS 2</a></li>
-      </ul>
     </div>
-
   </div>
 </section>
 
