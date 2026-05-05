@@ -19,7 +19,7 @@
       <li><a href="../projets.html">Projets</a></li>
       <li><a href="../veille.html">Veille techno</a></li>
       
-      <li><a href="../contact.html">Contact</a></li>
+      <li><a href="../tableau-synthese.html">Tableau de synthèse</a></li><li><a href="../contact.html">Contact</a></li>
     </ul>
     <button class="nav-toggle" aria-label="Menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
@@ -161,29 +161,30 @@ techno.local
 <span class="c"># Import-Users.ps1 — création en masse depuis un CSV</span>
 <span class="k">Import-Module</span> ActiveDirectory
 
+<span class="c"># On lit le fichier CSV (colonnes : Prenom, Nom, Service, MotDePasse)</span>
 <span class="k">$users</span> = <span class="k">Import-Csv</span> -Path <span class="s">".\users.csv"</span> -Delimiter <span class="s">";"</span>
 
 <span class="k">foreach</span> (<span class="k">$u</span> <span class="k">in</span> <span class="k">$users</span>) {
-    <span class="k">$sam</span> = <span class="s">"</span><span class="k">$</span>(<span class="k">$u</span>.Prenom.Substring(0,1).ToLower())<span class="k">$</span>(<span class="k">$u</span>.Nom.ToLower())<span class="s">"</span>
-    <span class="k">$upn</span> = <span class="s">"</span><span class="k">$sam</span>@techno.local<span class="s">"</span>
+
+    <span class="c"># Conversion du mot de passe en format sécurisé</span>
     <span class="k">$pwd</span> = <span class="k">ConvertTo-SecureString</span> <span class="k">$u</span>.MotDePasse -AsPlainText -Force
 
+    <span class="c"># Création du compte dans la bonne OU selon le service</span>
     <span class="k">New-ADUser</span> <span>`</span>
-        -Name <span class="s">"</span><span class="k">$</span>(<span class="k">$u</span>.Prenom) <span class="k">$</span>(<span class="k">$u</span>.Nom)<span class="s">"</span> <span>`</span>
-        -GivenName <span class="k">$u</span>.Prenom -Surname <span class="k">$u</span>.Nom <span>`</span>
-        -SamAccountName <span class="k">$sam</span> -UserPrincipalName <span class="k">$upn</span> <span>`</span>
-        -Path <span class="s">"OU=</span><span class="k">$</span>(<span class="k">$u</span>.Service),OU=Utilisateurs,OU=TECHNO,DC=techno,DC=local<span class="s">"</span> <span>`</span>
+        -Name            <span class="s">"</span><span class="k">$</span>(<span class="k">$u</span>.Prenom) <span class="k">$</span>(<span class="k">$u</span>.Nom)<span class="s">"</span> <span>`</span>
+        -SamAccountName  <span class="k">$u</span>.Prenom <span>`</span>
+        -Path            <span class="s">"OU=</span><span class="k">$</span>(<span class="k">$u</span>.Service),OU=Utilisateurs,OU=TECHNO,DC=techno,DC=local<span class="s">"</span> <span>`</span>
         -AccountPassword <span class="k">$pwd</span> <span>`</span>
-        -ChangePasswordAtLogon <span class="k">$true</span> <span>`</span>
-        -Enabled <span class="k">$true</span>
+        -Enabled         <span class="k">$true</span>
 
-    <span class="k">Add-ADGroupMember</span> -Identity <span class="s">"GG_</span><span class="k">$</span>(<span class="k">$u</span>.Service)<span class="s">"</span> -Members <span class="k">$sam</span>
+    <span class="c"># Ajout dans le groupe du service (ex : GG_Compta)</span>
+    <span class="k">Add-ADGroupMember</span> -Identity <span class="s">"GG_</span><span class="k">$</span>(<span class="k">$u</span>.Service)<span class="s">"</span> -Members <span class="k">$u</span>.Prenom
 
-    <span class="k">Write-Host</span> <span class="s">"✔ Compte créé : </span><span class="k">$sam</span><span class="s">"</span> -ForegroundColor Green
+    <span class="k">Write-Host</span> <span class="s">"Compte créé : </span><span class="k">$</span>(<span class="k">$u</span>.Prenom)<span class="s">"</span>
 }
 </div>
 
-        <p>Résultat&nbsp;: 40 utilisateurs créés en 8 secondes, tous rangés dans la bonne OU, membres du bon groupe global, mot de passe à changer à la première connexion. Gain de temps énorme et zéro erreur de saisie.</p>
+        <p>Résultat&nbsp;: 40 utilisateurs créés en quelques secondes, tous rangés dans la bonne OU et membres du bon groupe. Plus rapide et sans erreur de saisie.</p>
 
         <h2>5. Stratégies de groupe (GPO)</h2>
 
@@ -205,8 +206,7 @@ techno.local
           </table>
         </div>
 
-        <h3>Exemple de filtrage par sécurité</h3>
-        <p>Pour que <em>GPO-MapDrives</em> ne monte le lecteur Compta que sur les utilisateurs du groupe <code>GG_Compta</code>, j'ai utilisé le <strong>Security Filtering</strong> natif&nbsp;: GPO liée à l'OU mais filtrée sur le groupe. C'est plus propre qu'un WMI Filter et ça passe mieux à l'examen.</p>
+
 
         <h2>6. Tests &amp; recette</h2>
         <ul>
@@ -303,7 +303,7 @@ techno.local
       </ul></div>
       <div><h4>Ressources</h4><ul>
         
-        <li><a href="../contact.html">Contact</a></li>
+        <li><a href="../tableau-synthese.html">Tableau de synthèse</a></li><li><a href="../contact.html">Contact</a></li>
       </ul></div>
     </div>
     <div class="copy"><span>© 2026 Dimitri COLL</span><span><a href="../mentions-legales.html" style="color: var(--text-dim); text-decoration: none;">Mentions légales</a></span></div>

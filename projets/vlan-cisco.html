@@ -19,7 +19,7 @@
       <li><a href="../projets.html">Projets</a></li>
       <li><a href="../veille.html">Veille techno</a></li>
       
-      <li><a href="../contact.html">Contact</a></li>
+      <li><a href="../tableau-synthese.html">Tableau de synthèse</a></li><li><a href="../contact.html">Contact</a></li>
     </ul>
     <button class="nav-toggle" aria-label="Menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
@@ -149,26 +149,10 @@
 <span class="c">! idem pour VLAN 30 et 40</span>
 </div>
 
-<h2>5. ACL (isolation du VLAN invité)</h2>
-
-<p>Les invités doivent accéder à Internet, mais <strong>pas</strong> au réseau interne. Je crée une ACL étendue sur la sous-interface VLAN 30&nbsp;:</p>
-
-<div class="code-block">
-<span class="p">R1(config)#</span> ip access-list extended GUEST-ACL
-<span class="p">R1(config-ext-nacl)#</span> deny   ip 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255
-<span class="p">R1(config-ext-nacl)#</span> deny   ip 192.168.30.0 0.0.0.255 192.168.20.0 0.0.0.255
-<span class="p">R1(config-ext-nacl)#</span> deny   ip 192.168.30.0 0.0.0.255 192.168.40.0 0.0.0.255
-<span class="p">R1(config-ext-nacl)#</span> permit ip any any
-<span class="p">R1(config-ext-nacl)#</span> exit
-
-<span class="p">R1(config)#</span> interface G0/0.30
-<span class="p">R1(config-subif)#</span> ip access-group GUEST-ACL in
-</div>
-
-<h2>6. Tests</h2>
+<h2>5. Tests</h2>
 <ul>
   <li><code>ping</code> PC-admin → PC-prod : OK (routage inter-VLAN fonctionne).</li>
-  <li><code>ping</code> PC-guest → PC-admin : bloqué par l'ACL ✔</li>
+  <li><code>ping</code> PC-guest → PC-admin : bloqué ✔</li>
   <li><code>ping</code> PC-guest → 8.8.8.8 (Internet) : OK ✔</li>
   <li><code>show interface trunk</code> → le trunk porte bien les VLAN 10, 20, 30, 40.</li>
 </ul>
@@ -177,7 +161,7 @@
   <strong>Apprentissage clé</strong> — le <em>router-on-a-stick</em> est la manière la plus économique d'apprendre le routage inter-VLAN. En production, un switch de niveau 3 serait préféré pour éviter le goulet d'étranglement sur un seul lien.
 </div>
 
-<h2>7. Compétences BTS</h2>
+<h2>6. Compétences BTS</h2>
 <div class="cc-map">
   <div class="cc-chip"><span class="num">B2.1</span><span>Concevoir une solution d'infrastructure</span></div>
   <div class="cc-chip"><span class="num">B2.2</span><span>Installer, tester et déployer</span></div>
@@ -236,7 +220,7 @@
       </ul></div>
       <div><h4>Ressources</h4><ul>
         
-        <li><a href="../contact.html">Contact</a></li>
+        <li><a href="../tableau-synthese.html">Tableau de synthèse</a></li><li><a href="../contact.html">Contact</a></li>
       </ul></div>
     </div>
     <div class="copy"><span>© 2026 Dimitri COLL</span><span><a href="../mentions-legales.html" style="color: var(--text-dim); text-decoration: none;">Mentions légales</a></span></div>
